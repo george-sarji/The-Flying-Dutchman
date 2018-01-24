@@ -44,18 +44,3 @@ if there isn't a bunker
 - A function that decides the best direction to push a pirate      		Location BestDirection(Pirate p1, Pirate p2)
 - A function that decides whether it's best for the pirate to push or not	bool CanPush(Pirate p)
 
-private void pushInTheBestWay(Pirate p1, Pirate p2)
-{
-     if(p1.canPush(p2))
-     {
-         if (p2.HasCapsule())
-	 {
-	     p1.Push(p2, game.GetEnemyMothership().Location.Towards(p2, game.PushRange * 2)
-	 }
-	 else
-	 {
-	     p1.push(enemy, GetOutsideBorder(enemy.Location));
-	 }
-      }
-}
-(GetOutsideBorder function is already written in web kit)

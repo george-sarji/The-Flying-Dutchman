@@ -269,6 +269,22 @@ namespace DutchmanBotReviewed
                                 (a.GetLocation().Col + b.GetLocation().Col) / 2);
         }
 
+
+        private void PushInTheBestWay(Pirate p1, Pirate p2)
+        {
+            if(p1.CanPush(p2))
+            {
+                if(p2.HasCapsule())
+                {
+                    p1.Push(p2, game.GetEnemyMothership().Location.Towards(p2, game.PushRange*2));
+                }
+                else
+                {
+                    p1.Push(p2, GetOutsideBorder(p2.Location));
+                }
+            }
+        }
+
         // Unused.
         // private List<Pirate> WhoCanPush(List<Pirate> pirates, Pirate enemy)
         // {
