@@ -46,13 +46,23 @@ namespace DutchmanBotReviewed
         private const bool Debug = true;
         private List<Pirate> myPirates;
 
+        private Dictionary<Pirate, Location> loggedLocations;
+
         // ------------------------------------------
         // Initiating functions
         // ------------------------------------------
         public void DoTurn(PirateGame game)
         {
+            if(game.Turn==1 || loggedLocations==null)
+            {
+                loggedLocations = new Dictionary<Pirate, Location>();
+            }
+            
             Initialize(game);
+            PrintLogs();
+            IsThereABunker();
             MovePirates();
+            LogLocations();
         }
 
         public void Initialize(PirateGame game)
@@ -283,6 +293,45 @@ namespace DutchmanBotReviewed
                     p1.Push(p2, GetOutsideBorder(p2.Location));
                 }
             }
+        }
+
+        private void LogLocations()
+        {
+            foreach(var enemy in game.GetEnemyLivingPirates())
+            {
+                if(loggedLocations.ContainsKey(enemy))
+                {
+                    loggedLocations[enemy] = enemy.Location;
+                }
+                else
+                {
+                    loggedLocations.Add(enemy, enemy.Location);
+                }
+            }
+        }
+
+        private void PrintLogs()
+        {
+            foreach(var map in loggedLocations)
+            {
+                Print("Log for "+ map.Key.toString()+" is @ "+ map.Value+". Current location: "+map.Key.Location);
+            }
+        }
+
+        private bool IsThereABunker()
+        {
+            var bunker = false;
+            foreach(var map in loggedLocations)
+            {
+                var pirate = map.Key;
+                var location = map.Value;
+                if(pirate.InRange(game.GetMyMothership(), game.PushRange*2) && location.Equals(pirate.Location))
+                {
+                    Print("Possible bunker by "+ pirate.toString());
+                    bunker = true;
+                }
+            }
+            return bunker;
         }
 
         // Unused.
