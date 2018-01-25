@@ -47,6 +47,7 @@ namespace DutchmanBotReviewed
         private List<Pirate> myPirates;
 
         private Dictionary<Pirate, Location> loggedLocations;
+        private Dictionary<int, Location> loggedIDLocations;
 
         // ------------------------------------------
         // Initiating functions
@@ -56,13 +57,16 @@ namespace DutchmanBotReviewed
             if(game.Turn==1 || loggedLocations==null)
             {
                 loggedLocations = new Dictionary<Pirate, Location>();
+                loggedIDLocations = new Dictionary<int, Location>();
             }
             
             Initialize(game);
             PrintLogs();
+            PrintIDLogs();
             IsThereABunker();
             MovePirates();
             LogLocations();
+            LogLocationsID();
         }
 
         public void Initialize(PirateGame game)
@@ -307,6 +311,34 @@ namespace DutchmanBotReviewed
                 {
                     loggedLocations.Add(enemy, enemy.Location);
                 }
+            }
+        }
+
+        private void LogLocationsID()
+        {
+            foreach(var enemy in game.GetEnemyLivingPirates())
+            {
+                if(loggedIDLocations.ContainsKey(enemy.UniqueId))
+                {
+                    loggedIDLocations[enemy.UniqueId] = enemy.Location;
+                }
+                else
+                {
+                    loggedIDLocations.Add(enemy.UniqueId, enemy.Location);
+                }
+            }
+        }
+
+        private void PrintIDLogs()
+        {
+            foreach(var map in loggedIDLocations)
+            {
+                Print("Log for ID "+ map.Key + " is @ "+ map.Value);
+                var enemyID = game.GetAllEnemyPirates().Where(pirate => pirate.UniqueId == map.Key).FirstOrDefault();
+                if(enemyID==null)
+                    Print("Enemy is null.");
+                else
+                    Print("Current location for pirate: "+ enemyID.Location);
             }
         }
 
