@@ -15,6 +15,13 @@ namespace Bot
         private List<Capsule> myCapsules;
         
         private List<Mothership> myMotherships;
+
+        private List<Mothership> enemyMotherships;
+        private List<Pirate> enemyPirates;
+
+        private List<Capsule> enemyCapsules;
+
+        private bool defence = false;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -23,11 +30,17 @@ namespace Bot
         private void Initialize(PirateGame game)
         {
             this.game=game;
+            this.myPirates = game.GetMyLivingPirates().ToList();
+            this.myCapsules = game.GetMyCapsules().ToList();
+            this.myMotherships = game.GetMyMotherships().ToList();
+            this.enemyMotherships = game.GetEnemyMotherships().ToList();
+            this.enemyPirates = game.GetEnemyLivingPirates().ToList();
+            this.enemyCapsules = game.GetEnemyCapsules().ToList();
         }
 
         private void MovePirates()
         {
-            
+
         }
     }
 
